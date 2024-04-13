@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Interfaces;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -8,17 +9,19 @@ namespace WebApi.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly ITIEntity _context;
+   
+        private readonly IEmployeeRepo _employeeRepo;
 
-        public EmployeeController(ITIEntity context)
+        public EmployeeController(IEmployeeRepo employeeRepo)
         {
-            _context = context;
+           
+           _employeeRepo = employeeRepo;
         }
 
         [HttpGet]
         public IActionResult GetEmployee()
         {
-           List<Employee> emps = _context.Employees.ToList();
+           List<Employee> emps = _employeeRepo.GetAll();
             return Ok(emps);
 
         }
@@ -27,7 +30,7 @@ namespace WebApi.Controllers
         //model binder in api (primitive : route(parameter or querystring)) | (complex ===> request body)
         public IActionResult GetById(int id)
         {
-            Employee emp = _context.Employees.FirstOrDefault(x => x.Id == id);
+            Employee emp = _employeeRepo.GetById(id);
             return Ok(emp);
         }
 
@@ -35,15 +38,14 @@ namespace WebApi.Controllers
 
         public IActionResult GetByName(string name)
         {
-            Employee emp = _context.Employees.FirstOrDefault(x => x.Name == name);
+            Employee emp = _employeeRepo.GetByName(name);   
             return Ok(emp);
         }
 
         [HttpPost]
         public IActionResult PostEmployee(Employee newEmp)
         {
-            _context.Employees.Add(newEmp);
-            _context.SaveChanges();
+            _employeeRepo.Add(newEmp);
             string url = Url.Link("EmployeeDetailsRoute",new {id = newEmp.Id});
             return Created(url,newEmp);
 
@@ -53,18 +55,10 @@ namespace WebApi.Controllers
         public IActionResult PutEmployee(int id,Employee emp) { 
            if(ModelState.IsValid)
             {
-                Employee OldEmp = _context.Employees.FirstOrDefault(x=>x.Id == id);
-                if(OldEmp != null)
-                {
-                    OldEmp.Name = emp.Name;
-                    OldEmp.Salary = emp.Salary;
-                    OldEmp.Address = emp.Address;
-                    OldEmp.Age = emp.Age;
-                    _context.SaveChanges();
-                    return StatusCode(204);
-                }
-              return BadRequest();
-
+         
+                _employeeRepo.Update(id, emp);  
+                 return StatusCode(204);
+   
             }
             return BadRequest(ModelState);
         
@@ -75,9 +69,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                Employee emp = _context.Employees.FirstOrDefault(x => x.Id == id);
-                _context.Employees.Remove(emp);
-                _context.SaveChanges();
+                _employeeRepo.Delete(id);
                 return StatusCode(StatusCodes.Status204NoContent);
             }
             catch (Exception ex)

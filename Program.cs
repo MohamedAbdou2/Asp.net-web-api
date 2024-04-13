@@ -1,7 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using WebApi.Interfaces;
 using WebApi.Models;
+using WebApi.Repositories;
 
 namespace WebApi
 {
@@ -23,6 +25,7 @@ namespace WebApi
             });
 
             //custom service
+            builder.Services.AddScoped<IEmployeeRepo,EmployeeRepo>();
 
             var app = builder.Build();
 
