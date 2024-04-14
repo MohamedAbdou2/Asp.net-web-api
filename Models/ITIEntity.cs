@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Models
 {
@@ -8,6 +9,10 @@ namespace WebApi.Models
         public ITIEntity(DbContextOptions options):base(options) { }
 
         public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<Product> Products { get; set; }   
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

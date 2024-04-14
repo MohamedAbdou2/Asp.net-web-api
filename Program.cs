@@ -26,6 +26,7 @@ namespace WebApi
 
             //custom service
             builder.Services.AddScoped<IEmployeeRepo,EmployeeRepo>();
+            builder.Services.AddScoped<IProductRepo, ProductRepo>();
 
             var app = builder.Build();
 
