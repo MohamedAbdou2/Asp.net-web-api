@@ -1,4 +1,5 @@
-﻿using WebApi.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApi.Interfaces;
 using WebApi.Models;
 
 namespace WebApi.Repositories
@@ -25,6 +26,11 @@ namespace WebApi.Repositories
         public Employee GetByName(string name)
         {
             return _context.Employees.FirstOrDefault(x => x.Name == name);
+        }
+
+        public Employee GetEmployeeDepartment(int id)
+        {
+            return _context.Employees.Include(e => e.Department).FirstOrDefault(x => x.Id == id);
         }
         public void Add(Employee employee)
         {
@@ -55,5 +61,7 @@ namespace WebApi.Repositories
                 _context.SaveChanges();
             }
         }
+
+       
     }
 }

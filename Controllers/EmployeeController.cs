@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.DTO;
 using WebApi.Interfaces;
 using WebApi.Models;
 
@@ -40,6 +41,23 @@ namespace WebApi.Controllers
         {
             Employee emp = _employeeRepo.GetByName(name);   
             return Ok(emp);
+        }
+
+        [HttpGet("dept/{id}")]
+        public IActionResult GetEmployeeWithDepartment(int id)
+        {
+            Employee emp = _employeeRepo.GetEmployeeDepartment(id);
+            return Ok(emp);
+        }
+        [HttpGet("dto/{id}")]
+        public IActionResult GetEmployeeWithDepartment2(int id)
+        {
+            Employee emp = _employeeRepo.GetEmployeeDepartment(id);
+            EmployeeNameWithDepartmentNameDto empDto = new EmployeeNameWithDepartmentNameDto();
+            empDto.EmpId = emp.Id;  
+            empDto.EmpName = emp.Name;
+            empDto.DeptName = emp.Department.Name;
+            return Ok(empDto);
         }
 
         [HttpPost]

@@ -12,6 +12,10 @@ namespace WebApi.Models
 
         public DbSet<Product> Products { get; set; }   
 
+        public DbSet<Department> Departments { get; set; }  
+
+
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

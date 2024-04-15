@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WebApi.Interfaces;
@@ -23,7 +24,17 @@ namespace WebApi
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("c1"));
             });
+            builder.Services.AddCors(CorsOptions => {
 
+                CorsOptions.AddPolicy("MyPolicy", CorsPolicyBuilder =>
+                {
+
+                    CorsPolicyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+
+                });
+            
+            
+            });
             //custom service
             builder.Services.AddScoped<IEmployeeRepo,EmployeeRepo>();
             builder.Services.AddScoped<IProductRepo, ProductRepo>();
@@ -37,6 +48,9 @@ namespace WebApi
                 app.UseSwaggerUI();
             }
 
+            app.UseStaticFiles();
+            //settings for cors policy
+            app.UseCors("MyPolicy");  //policy block or open
             app.UseAuthorization();
 
 
