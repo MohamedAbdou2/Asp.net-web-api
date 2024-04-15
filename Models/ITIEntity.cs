@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Models
 {
-    public class ITIEntity: DbContext
+    public class ITIEntity: IdentityDbContext<ApplicationUser>
     {
         public ITIEntity() { }
         public ITIEntity(DbContextOptions options):base(options) { }

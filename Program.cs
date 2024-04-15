@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WebApi.Interfaces;
@@ -24,6 +25,9 @@ namespace WebApi
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("c1"));
             });
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ITIEntity>();
+
             builder.Services.AddCors(CorsOptions => {
 
                 CorsOptions.AddPolicy("MyPolicy", CorsPolicyBuilder =>
