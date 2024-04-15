@@ -14,6 +14,8 @@ namespace WebApi.Models
 
         public DbSet<Department> Departments { get; set; }  
 
+        public DbSet<Category> Categories { get; set; }
+
 
 
 
